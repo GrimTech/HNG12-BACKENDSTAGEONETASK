@@ -124,7 +124,7 @@ fastify.get('/api/classify-number', {
             checkPerfect(digit),
             checkArmstrongNumber(digit),
             checkEven(digit),
-            checkSum(digit),
+            sumOfDigits(digit),
             fetch(`http://numbersapi.com/${digit}/math?json`)
         ]);
          if (!funFactResponse.ok) {
