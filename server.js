@@ -92,7 +92,7 @@ function checkArmstrongNumber( n ) {
   
 function sumOfDigits( n ) {
     // Convert the number to a string and split into an array of digits
-    const digits = String( n ).split('');
+    const digits = String( Math.abs(n) ).split('');
     
     // Use reduce to sum the digits
     const sum = digits.reduce((acc, digit) => acc + parseInt(digit, 10), 0);
@@ -109,10 +109,18 @@ fastify.get('/api/classify-number', {
     }
 }, async (request, reply) => {
     try {
-        let digit = request.query.number;
-        if ( isNaN( digit ) || !Number.isInteger( digit ) ) {
+        let input = request.query.number;
+        let digit = input === "" || isNaN(Number(input)) ? input : Number( input );
+        console.log(typeof(digit));
+        console.log(digit);
+        if ( !Number.isInteger( digit ) ) {
+            console.log('double');
+            if ( digit == "" ) {
+                throw new Error('nil')
+            }
             throw new Error( digit );
         }
+        console.log('grim');
 
         // Prepare the response data object
             const responseData = {
@@ -133,6 +141,7 @@ fastify.get('/api/classify-number', {
          const funFactData = await funFactResponse.json();
          responseData.fun_fact = funFactData.text; // Assign the fun fact
 
+         console.log('banana');
         responseData.number = digit;
         responseData.is_prime = isPrime;
         responseData.is_perfect = isPerfect;
@@ -149,21 +158,30 @@ fastify.get('/api/classify-number', {
             responseData.properties.push('odd');
         }
 
+        console.log('human');
         // Set the response type to JSON
         reply.type('application/json');
-
+        console.log(digit);
+        console.log(responseData);
         // Send the response
         return responseData;
     } catch (error) {
         // Log the error for debugging
         fastify.log.error(error);
 
-        if (error.message) {
+        if (error.message === 'nil') {
+            // Respond with 400
+            return reply.status(400).send({
+                number: '',
+                error: true
+            });
+        }
+        else if ( error.message ) {
             // Respond with 400
             return reply.status(400).send({
                 number: error.message,
                 error: true
-        });
+            });
         }
         else {
             // Respond with 500
