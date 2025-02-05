@@ -12,7 +12,7 @@ jobs:
       - name: Ping my API
         run: |
           start_time=$(date +%s%N)  # Get the start time in nanoseconds
-          response=$(curl -s -o /dev/null -w "%{http_code}" https://hng12-backendstageonetask.onrender.com/api/classify-number)  # Replace with your actual API URL
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://hng12-backendstageonetask.onrender.com/api/classify-number?number=373)  # Replace with your actual API URL
           end_time=$(date +%s%N)  # Get the end time in nanoseconds
           response_time=$((($end_time - $start_time) / 1000000))  # Calculate response time in milliseconds
           
