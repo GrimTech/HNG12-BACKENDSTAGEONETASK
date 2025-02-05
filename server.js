@@ -109,7 +109,7 @@ fastify.get('/api/classify-number', {
     }
 }, async (request, reply) => {
     try {
-        let digit = Number(request.query.number);
+        let digit = request.query.number;
         if ( isNaN( digit ) || !Number.isInteger( digit ) ) {
             throw new Error( digit );
         }
