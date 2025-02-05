@@ -142,7 +142,7 @@ fastify.get('/api/classify-number', {
          responseData.fun_fact = funFactData.text; // Assign the fun fact
 
          console.log('banana');
-        responseData.number = digit;
+        responseData.number = input;
         responseData.is_prime = isPrime;
         responseData.is_perfect = isPerfect;
         responseData.digit_sum = sumDigits;
