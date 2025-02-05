@@ -111,16 +111,12 @@ fastify.get('/api/classify-number', {
     try {
         let input = request.query.number;
         let digit = input === "" || isNaN(Number(input)) ? input : Number( Math.abs(input) );
-        console.log(typeof(digit));
-        console.log(digit);
         if ( !Number.isInteger( digit ) ) {
-            console.log('double');
             if ( digit == "" ) {
                 throw new Error('nil')
             }
             throw new Error( digit );
         }
-        console.log('grim');
 
         // Prepare the response data object
             const responseData = {
@@ -141,7 +137,6 @@ fastify.get('/api/classify-number', {
          const funFactData = await funFactResponse.json();
          responseData.fun_fact = funFactData.text; // Assign the fun fact
 
-         console.log('banana');
         responseData.number = input;
         responseData.is_prime = isPrime;
         responseData.is_perfect = isPerfect;
@@ -158,11 +153,8 @@ fastify.get('/api/classify-number', {
             responseData.properties.push('odd');
         }
 
-        console.log('human');
         // Set the response type to JSON
         reply.type('application/json');
-        console.log(digit);
-        console.log(responseData);
         // Send the response
         return responseData;
     } catch (error) {
