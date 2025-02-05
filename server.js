@@ -118,8 +118,15 @@ fastify.get('/api/classify-number', {
             const responseData = {
         };
 
-         // Fetch a fun fact from the external API
-         const funFactResponse = await fetch(`http://numbersapi.com/${digit}/math?json`);
+          // Run checks in parallel
+        const [isPrime, isPerfect, isArmStrong, isEven, sumDigits, funFactResponse] = await Promise.all([
+            checkPrime(digit),
+            checkPerfect(digit),
+            checkArmstrongNumber(digit),
+            checkEven(digit),
+            checkSum(digit),
+            fetch(`http://numbersapi.com/${digit}/math?json`)
+        ]);
          if (!funFactResponse.ok) {
              throw new Error('Fun fact APi is not working');
          }
@@ -127,15 +134,15 @@ fastify.get('/api/classify-number', {
          responseData.fun_fact = funFactData.text; // Assign the fun fact
 
         responseData.number = digit;
-        responseData.is_prime = checkPrime( digit );
-        responseData.is_perfect = checkPerfect( digit );
-        responseData.digit_sum = sumOfDigits( digit );
+        responseData.is_prime = isPrime;
+        responseData.is_perfect = isPerfect;
+        responseData.digit_sum = sumDigits;
         responseData.properties = [];
 
-        if ( checkArmstrongNumber( digit ) ) {
+        if ( isArmStrong ) {
             responseData.properties.push('armstrong');
         }
-        if ( checkEven( digit ) ) {
+        if ( isEven ) {
             responseData.properties.push('even');
         }
         else {
