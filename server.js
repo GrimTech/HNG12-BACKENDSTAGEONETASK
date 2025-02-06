@@ -92,7 +92,7 @@ function checkArmstrongNumber( n ) {
   
 function sumOfDigits( n ) {
     // Convert the number to a string and split into an array of digits
-    const digits = String( n ).split('');
+    const digits = String( Math.abs(n) ).split('');
     
     // Use reduce to sum the digits
     const sum = digits.reduce((acc, digit) => acc + parseInt(digit, 10), 0);
@@ -110,7 +110,7 @@ fastify.get('/api/classify-number', {
 }, async (request, reply) => {
     try {
         let input = request.query.number;
-        let digit = input === "" || isNaN(Number(input)) ? input : Number( Math.abs(input) );
+        let digit = input === "" || isNaN(Number(input)) ? input : Number( input );
         if ( !Number.isInteger( digit ) ) {
             if ( digit == "" ) {
                 throw new Error('nil')
