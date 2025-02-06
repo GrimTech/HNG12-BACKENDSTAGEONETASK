@@ -77,7 +77,7 @@ function checkPerfect( n ) {
 
 function checkArmstrongNumber( n ) {
     // Convert input to a number and validate
-    const number = Number( n );
+    const number = Number( Math.abs(n) );
     if ( number < 0 ) {
       return false;
     }
